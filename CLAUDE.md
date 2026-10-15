@@ -12,6 +12,7 @@ Full behavior lives in [docs/spec.md](docs/spec.md) — keep it current when beh
 ## Layout
 - `WebSlicer/SlicePlan.swift` — pure math: source size + settings → output size + slice rects. No I/O.
 - `WebSlicer/Slicer.swift` — ImageIO/CoreGraphics: read, scale, crop, write PNGs, pick output folder.
+- `WebSlicer/SliceModel.swift` — runs slicing off the main thread, holds result lines, reveals folders in Finder.
 - `WebSlicer/ContentView.swift` — the single window.
 - `WebSlicerTests/` — Swift Testing. Seam and pixel round-trip tests are the safety net; keep them green.
 
@@ -31,4 +32,4 @@ Full behavior lives in [docs/spec.md](docs/spec.md) — keep it current when beh
 | 2026-10-15 | Fields: integers, min 100, no max, empty → 4096, persisted | Prevents accidental thousands-of-files; other tools have other limits. |
 | 2026-10-15 | Batch drops processed independently; non-images skipped and listed | Same loop, no surprise rejections. |
 | 2026-10-15 | URL capture is phase 2 | Basic WKWebView snapshot is ~1 day; robustness (lazy-load, sticky headers) is multi-day. |
-| 2026-10-15 | XcodeGen for the project file | Readable, diffable `project.yml` instead of a hand-maintained pbxproj. |
+| 2026-10-15 | XcodeGen for the project file; `.xcodeproj` is gitignored | Readable, diffable `project.yml` is the single source; run `xcodegen generate` after cloning. |
