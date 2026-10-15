@@ -1,0 +1,49 @@
+name: WebSlicer
+options:
+  bundleIdPrefix: com.jacobheftmann
+  deploymentTarget:
+    macOS: "26.0"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  WebSlicer:
+    type: application
+    platform: macOS
+    sources: [WebSlicer]
+    settings:
+      base:
+        PRODUCT_NAME: Web Slicer
+        PRODUCT_BUNDLE_IDENTIFIER: com.jacobheftmann.WebSlicer
+        PRODUCT_MODULE_NAME: WebSlicer
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Web Slicer
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.graphics-design
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Manual
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: NO
+  WebSlicerTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [WebSlicerTests]
+    dependencies:
+      - target: WebSlicer
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jacobheftmann.WebSlicerTests
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Manual
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Web Slicer.app/Contents/MacOS/Web Slicer"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  WebSlicer:
+    build:
+      targets:
+        WebSlicer: all
+        WebSlicerTests: [test]
+    test:
+      targets: [WebSlicerTests]
