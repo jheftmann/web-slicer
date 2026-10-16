@@ -68,3 +68,7 @@ full behavior and [docs/testing.md](docs/testing.md) for the manual release chec
 - Sharp Lanczos downscaling for images wider than the Width setting.
 - Color profiles preserved; output never overwrites an existing folder.
 - App icon.
+
+## License
+
+[MIT](LICENSE) © 2026 Jacob Heftmann
