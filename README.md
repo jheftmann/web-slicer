@@ -45,13 +45,13 @@ The app lands in `build/Build/Products/Release/Web Slicer.app`.
 
 ## Manual test checklist
 
-- [ ] Drop a Retina PNG screenshot taller than 4096px → correct slice count, folder opens in Finder.
-- [ ] Drop a Display P3 screenshot → slice colors match the original in Preview.
-- [ ] Drop a JPEG → PNG slices produced.
-- [ ] Drop an image wider than the Width setting → readout shows the scaled size; slices have that width.
-- [ ] Drop several images at once → one folder per image.
-- [ ] Drop a text file alongside an image → image sliced, "Skipped: …" shown.
-- [ ] Drop the same image twice → second run creates `<name> slices 2/`.
-- [ ] Type `4` into a field → clamps to 100. Clear a field → resets to 4096.
-- [ ] Quit and relaunch → field values remembered.
-- [ ] Click the drop zone and ⌘O → file picker opens.
+- [x] Drop a Retina PNG screenshot taller than 4096px → correct slice count, folder opens in Finder.
+- [x] Drop a Display P3 screenshot → slice colors match the original in Preview.
+- [x] Drop a JPEG → PNG slices produced.
+- [x] Drop an image wider than the Width setting → readout shows the scaled size; slices have that width.
+- [x] Drop several images at once → one folder per image.
+- [x] Drop a text file alongside an image → image sliced, "Skipped: …" shown.
+- [x] Drop the same image twice → second run creates `<name> slices 2/`.
+- [x] Type `4` into a field → clamps to 100. Clear a field → resets to 4096.
+- [x] Quit and relaunch → field values remembered.
+- [x] Click the drop zone and ⌘O → file picker opens.

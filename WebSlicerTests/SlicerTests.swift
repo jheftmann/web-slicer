@@ -62,6 +62,29 @@ struct SlicerTests {
         #expect(rows == Array(0..<1000))
     }
 
+    /// Downscaling must stay at least as sharp as CGContext's `.high`, which blurred small text in real screenshots.
+    @Test func downscaleIsSharperThanCoreGraphicsHigh() throws {
+        let space = try #require(CGColorSpace(name: CGColorSpace.displayP3))
+        // Fine 1px detail, like small text: a grid of thin lines.
+        let (w, h) = (500, 300)
+        let context = try #require(CGContext(data: nil, width: w, height: h, bitsPerComponent: 8, bytesPerRow: 0, space: space,
+                                             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+        context.setFillColor(gray: 1, alpha: 1)
+        context.fill(CGRect(x: 0, y: 0, width: w, height: h))
+        context.setFillColor(gray: 0, alpha: 1)
+        for x in stride(from: 0, to: w, by: 3) { context.fill(CGRect(x: x, y: 0, width: 1, height: h)) }
+        let source = try #require(context.makeImage())
+        let plan = SlicePlan(sourceWidth: w, sourceHeight: h, maxWidth: 400, sliceHeight: 4096)
+
+        let ours = try Slicer.render(source, plan: plan)
+        let baseline = try #require(CGContext(data: nil, width: 400, height: 240, bitsPerComponent: 8, bytesPerRow: 0, space: space,
+                                              bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+        baseline.interpolationQuality = .high
+        baseline.draw(source, in: CGRect(x: 0, y: 0, width: 400, height: 240))
+
+        #expect(sharpness(ours, space: space) > sharpness(try #require(baseline.makeImage()), space: space))
+    }
+
     // MARK: Output naming
 
     @Test func writesNumberedFilesIntoFolderNextToSource() throws {
@@ -168,6 +191,19 @@ struct SlicerTests {
                                 bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
         context.draw(image, in: CGRect(x: 0, y: 0, width: image.width, height: image.height))
         return out
+    }
+
+    /// Mean absolute horizontal difference of the red channel — higher means crisper edges.
+    private func sharpness(_ image: CGImage, space: CGColorSpace) -> Double {
+        let px = bytes(of: image, space: space)
+        var sum = 0
+        for y in 0..<image.height {
+            for x in 0..<(image.width - 1) {
+                let i = (y * image.width + x) * 4
+                sum += abs(Int(px[i]) - Int(px[i + 4]))
+            }
+        }
+        return Double(sum) / Double(image.width * image.height)
     }
 
     private func stack(_ slices: [CGImage], space: CGColorSpace) -> [UInt8] {
