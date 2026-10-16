@@ -17,6 +17,8 @@ Full behavior lives in [docs/spec.md](docs/spec.md) — keep it current when beh
 - `WebSlicerTests/` — Swift Testing. Seam and pixel round-trip tests are the safety net; keep them green.
 
 ## Conventions
+- Versioning: semver in `MARKETING_VERSION` (project.yml); bump `CURRENT_PROJECT_VERSION` each release; add a README changelog entry.
+- Releases: zip the Release build as `Web-Slicer.zip` and attach it to a GitHub release tagged `vX.Y.Z` (README links to `releases/latest`).
 - Work on feature branches; never commit to `main` directly.
 - Pixels, never points, everywhere in the slicing code.
 
@@ -31,5 +33,7 @@ Full behavior lives in [docs/spec.md](docs/spec.md) — keep it current when beh
 | 2026-10-15 | Always PNG, preserve color profile | Lossless; avoids JPEG generation loss and P3 shifts. |
 | 2026-10-15 | Fields: integers, min 100, no max, empty → 4096, persisted | Prevents accidental thousands-of-files; other tools have other limits. |
 | 2026-10-15 | Batch drops processed independently; non-images skipped and listed | Same loop, no surprise rejections. |
-| 2026-10-15 | URL capture is phase 2 | Basic WKWebView snapshot is ~1 day; robustness (lazy-load, sticky headers) is multi-day. |
+| 2026-10-15 | URL capture dropped | Considered as a phase 2 (offscreen WKWebView snapshot); Jacob decided not to pursue it. |
+| 2026-10-15 | Downscale with vImage Lanczos, not CGContext | CGContext `.high` rendered identically to `.default` and softened small text; Lanczos measured ~12% sharper. |
+| 2026-10-15 | Icon is an Icon Composer `.icon` (`WebSlicer/AppIcon.icon`) | Native Liquid Glass icon on macOS 26; SVG layer keeps it editable. |
 | 2026-10-15 | XcodeGen for the project file; `.xcodeproj` is gitignored | Readable, diffable `project.yml` is the single source; run `xcodegen generate` after cloning. |

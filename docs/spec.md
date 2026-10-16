@@ -3,7 +3,7 @@
 A tiny macOS app: drop an image (usually a long screenshot), get it cut into
 fixed-height PNG slices with no gaps or overlaps, ready to import into Figma.
 
-## Phase 1 — Image slicing
+## Behavior
 
 ### Inputs
 - **Drop** one or more files on the drop zone, **click** the drop zone, or **File → Open (⌘O)**.
@@ -22,6 +22,7 @@ fixed-height PNG slices with no gaps or overlaps, ready to import into Figma.
 - 4096 is Figma's max image dimension on either axis.
 - Whole numbers only, minimum 100, no maximum. Empty field resets to 4096.
 - Values persist between launches.
+- Downscaling uses Lanczos resampling (vImage) to keep small text crisp.
 
 ### Slicing rules
 - Slices are stacked top to bottom with no gap and no overlap. Re-stacking them
@@ -46,7 +47,7 @@ fixed-height PNG slices with no gaps or overlaps, ready to import into Figma.
 
 ### UI
 AppCleaner-style single window: dashed drop zone with icon and label, one row of
-two fields beneath. No toolbar, no Settings window in phase 1. Default macOS
+two fields beneath. No toolbar, no Settings window. Default macOS
 components only.
 
 ### Testing
@@ -58,11 +59,4 @@ components only.
   unique color, run the real slicer to disk, read the PNGs back, re-stack, and
   require a byte-exact match. Run in sRGB and Display P3. With scaling, compare
   against the scaled image.
-- **Manual checklist:** see README.
-
-## Phase 2 — URL capture (not started)
-- URL field in the toolbar; load the page in an offscreen `WKWebView`, snapshot
-  full height, feed the result into the same slicer.
-- Output to `~/Downloads/<domain> slices/`.
-- Known hard parts: lazy-loaded images, sticky headers, cookie banners, auth,
-  infinite scroll, memory for very tall pages. To be grilled separately.
+- **Manual checklist:** [docs/testing.md](testing.md).

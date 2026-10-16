@@ -5,3 +5,4 @@ DerivedData/
 *.xcodeproj/project.xcworkspace/xcuserdata/
 .claude/settings.local.json
 WebSlicer.xcodeproj/
+test/
